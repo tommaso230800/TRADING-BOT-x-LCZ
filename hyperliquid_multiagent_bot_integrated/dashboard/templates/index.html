@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard – Hyperliquid Multi-Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Hyperliquid Multi-Agent Dashboard</h1>
+    <p class="subtitle">Ultime decisioni AI – generate alle {{ generated_at }}</p>
+
+    <div class="decisions">
+        {% for entry in decisions %}
+        <div class="card">
+            <div class="card-header">
+                <span class="symbol">{{ entry.symbol }}</span>
+                <span class="timestamp">{{ entry.ts }}</span>
+            </div>
+            <pre class="json-block">{{ entry.decision | tojson(indent=2) }}</pre>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

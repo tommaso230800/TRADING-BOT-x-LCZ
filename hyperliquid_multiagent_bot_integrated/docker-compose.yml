@@ -1,0 +1,111 @@
+version: "3.9"
+
+services:
+  technical_analyzer:
+    build:
+      context: .
+      dockerfile: agents/01_technical_analyzer/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+    ports:
+      - "8001:8000"
+
+  fibonacci_agent:
+    build:
+      context: .
+    dockerfile: agents/03_fibonacci_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  gann_agent:
+    build:
+      context: .
+      dockerfile: agents/04_gann_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  sentiment_agent:
+    build:
+      context: .
+      dockerfile: agents/05_sentiment_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  forecaster_agent:
+    build:
+      context: .
+      dockerfile: agents/06_forecaster_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  master_ai_agent:
+    build:
+      context: .
+      dockerfile: agents/07_master_ai_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  position_manager:
+    build:
+      context: .
+      dockerfile: agents/08_position_manager/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+    ports:
+      - "8010:8000"
+
+  learning_agent:
+    build:
+      context: .
+      dockerfile: agents/10_learning_agent/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+
+  orchestrator:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile
+    env_file: .env
+    restart: always
+    depends_on:
+      - technical_analyzer
+      - fibonacci_agent
+      - gann_agent
+      - sentiment_agent
+      - forecaster_agent
+      - master_ai_agent
+      - position_manager
+    volumes:
+      - shared_data:/data
+    ports:
+      - "8000:8000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    env_file: .env
+    restart: always
+    volumes:
+      - shared_data:/data
+    ports:
+      - "8080:8000"
+
+volumes:
+  shared_data:
